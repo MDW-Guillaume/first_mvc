@@ -13,7 +13,7 @@
 
     <main>
     <div class="movie-back">
-            <a href="/" class="movie-back__button">< Retour à la liste</a>
+            <a href="/" class="movie-back__button landing-actions">< Retour à la liste</a>
         </div>
         <h2 class="title">Modifier le film <?= $movie['title']; ?></h2>
 

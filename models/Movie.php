@@ -12,10 +12,11 @@ class Movie
     public $senarist;
     public $producers;
     public $releasedate;
+    public $image;
     public $created_at;
     public $updated_at;
 
-    public function __construct($id, $user_id, $title, $director, $synopsis, $type, $senarist, $producers, $releasedate, $created_at, $updated_at)
+    public function __construct($id, $user_id, $title, $director, $synopsis, $type, $senarist, $producers, $releasedate, $image, $created_at, $updated_at)
     {
         $this->id = $id;
         $this->user_id = $user_id;
@@ -26,6 +27,7 @@ class Movie
         $this->senarist = $senarist;
         $this->producers = $producers;
         $this->releasedate = $releasedate;
+        $this->image = $image;
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
     }
@@ -58,20 +60,24 @@ class Movie
     {
         return $this->producers;
     }
-    function getreleasedate()
+    function getReleasedate()
     {
         return $this->releasedate;
     }
+    function getImage()
+    {
+        return $this->image;
+    }
 
-    static function create($user_id, $title, $director, $synopsis, $type, $senarist, $producer, $releasedate)
+    static function create($user_id, $title, $director, $synopsis, $type, $senarist, $producer, $releasedate, $image)
     {
         require_once('models/db_connect.php');
 
         try {
             $db = connection();
 
-            $stmt = $db->prepare('INSERT INTO movies (user_id, title, director, synopsis, type, senarist, producer, releasedate, created_at, updated_at)
-                                    VALUES (:user_id, :title, :director, :synopsis, :type, :senarist, :producer, :releasedate, NOW(), NOW())');
+            $stmt = $db->prepare('INSERT INTO movies (user_id, title, director, synopsis, type, senarist, producer, releasedate, image, created_at, updated_at)
+                                    VALUES (:user_id, :title, :director, :synopsis, :type, :senarist, :producer, :releasedate, :image, NOW(), NOW())');
             $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
             $stmt->bindValue(':title', $title, PDO::PARAM_STR);
             $stmt->bindValue(':director', $director, PDO::PARAM_STR);
@@ -80,16 +86,18 @@ class Movie
             $stmt->bindValue(':senarist', $senarist, PDO::PARAM_STR);
             $stmt->bindValue(':producer', $producer, PDO::PARAM_STR);
             $stmt->bindValue(':releasedate', $releasedate, PDO::PARAM_INT);
+            $stmt->bindValue(':image', $image, PDO::PARAM_LOB);
+
             $stmt->execute();
             $movie = $db->lastInsertId();
 
-            return new Movie($movie, $user_id, $title, $director, $synopsis, $type, $senarist, $producer, $releasedate, new DateTime(), new DateTime());
+            return new Movie($movie, $user_id, $title, $director, $synopsis, $type, $senarist, $producer, $releasedate, $image, new DateTime(), new DateTime());
         } catch (PDOException $e) {
             die('Erreur de requete : ' . $e->getMessage());
         }
     }
 
-    static function update($movie_id, $title, $director, $synopsis, $type, $senarist, $producer, $releasedate)
+    static function update($movie_id, $title, $director, $synopsis, $type, $senarist, $producer, $releasedate, $image)
     {
         require_once('models/db_connect.php');
         
@@ -105,6 +113,7 @@ class Movie
                         senarist = :senarist,
                         producer = :producer,
                         releasedate = :releasedate,
+                        image = :image,
                         updated_at = NOW()
                       WHERE id = :movie_id');
             
@@ -116,10 +125,27 @@ class Movie
             $stmt->bindValue(':senarist', $senarist, PDO::PARAM_STR);
             $stmt->bindValue(':producer', $producer, PDO::PARAM_STR);
             $stmt->bindValue(':releasedate', $releasedate, PDO::PARAM_INT);
+            $stmt->bindValue(':image', $image, PDO::PARAM_LOB);
             $stmt->execute();
             $movie = $db->lastInsertId();
 
-            return new Movie($movie, $user_id, $title, $director, $synopsis, $type, $senarist, $producer, $releasedate, new DateTime(), new DateTime());
+            return new Movie($movie, $user_id, $title, $director, $synopsis, $type, $senarist, $producer, $releasedate, $image, new DateTime(), new DateTime());
+        } catch (PDOException $e) {
+            die('Erreur de requete : ' . $e->getMessage());
+        }
+    }
+
+    static function delete($id){
+        require_once('models/db_connect.php');
+        
+        try {
+            $db = connection();
+
+            $stmt = $db->prepare('DELETE FROM movies WHERE id = :id');
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return true;
         } catch (PDOException $e) {
             die('Erreur de requete : ' . $e->getMessage());
         }
@@ -181,6 +207,24 @@ class Movie
             return $result;
             // var_dump($result);
             // die;
+        } catch (PDOException $e) {
+            die('Erreur de requete : ' . $e->getMessage());
+        }
+    }
+    
+    static function getSearchMovie($search){
+        require_once('models/db_connect.php');
+        try {
+            $db = connection();
+            $stmt = $db->prepare('SELECT *
+                    FROM movies
+                    WHERE title LIKE :search');
+
+            $stmt->bindValue(':search', '%'.$search.'%', PDO::PARAM_STR);        
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            return $result;
         } catch (PDOException $e) {
             die('Erreur de requete : ' . $e->getMessage());
         }

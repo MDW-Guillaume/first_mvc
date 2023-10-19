@@ -12,10 +12,14 @@
     <?php include('views/layout/header.php'); ?>
 
     <main>
+        <div class="movie-back">
+            <a href="/" class="movie-back__button landing-actions">
+                < Retour à la liste</a>
+        </div>
         <h2 class="title">Ajouter un film</h2>
 
         <div class="movie-contaier">
-            <form action="/?action=movie/add" method="POST" class="movie-form">
+            <form action="/?action=movie/add" method="POST" enctype="multipart/form-data" class="movie-form">
                 <div class="movie-form_group">
                     <div><label for="movieTitle">Titre</label><input type="text" name="title" id="movieTitle"></div>
                     <div><label for="movieDirector">Réalisateur</label><input type="text" name="director" id="movieDirector"></div>
@@ -30,6 +34,7 @@
                 </div>
                 <div class="movie-form_group">
                     <div><label for="movieReleaseDate">Année de sortie</label><input type="number" min="1800" name="releasedate" id="movieReleaseDate"></div>
+                    <div><label for="movieImage">Année de sortie</label><input type="file" accept="image/*" name="image" id="movieImage"></div>
                 </div>
                 <div class="movie-form_group movie-form_submit"><input type="submit" value="Ajouter"></div>
             </form>

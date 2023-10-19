@@ -11,11 +11,14 @@
 
     <main>
         <div class="movie-back">
-            <a href="/" class="movie-back__button">< Retour à la liste</a>
+            <a href="/" class="movie-back__button landing-actions">< Retour à la liste</a>
         </div>
         <h2 class="title"><?= $movie['title']; ?></h2>
 
-        <div class="movie-contaier">
+        <div class="movie-container movie-contaier__edit">
+            <div class="movie-image">
+                <img src = "data:image/png;base64, <?= base64_encode($movie['image']) ?>"/>
+            </div>
             <div class="movie-form">
                 <div class="movie-form_group">
                     <div><span>Titre</span><span><?= $movie['title'] ?></span></div>
