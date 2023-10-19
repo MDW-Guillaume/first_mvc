@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+}
+
+/* Default Table Style */
+table {
+    color: #333;
+    background: white;
+    border: 1px solid grey;
+    font-size: 12pt;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table thead th,
+table tfoot th {
+    color: #777;
+    background: rgba(0, 0, 0, .1);
+}
+
+table th,
+table td {
+    padding: .5em;
+    border: 1px solid lightgrey;
+}
+
+header {
+    background-color: rgba(25, 177, 25, 0.808);
+}
+
+header nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0;
+    padding: 10px 50px;
+}
+
+header nav ul li {
+    list-style: none;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 24px 28px;
+    z-index: 1;
+    right: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-content .dropdown-child {
+    margin: 5px 0;
+}
+
+main{
+    margin : 20px 20px;
+}
+
+.movie-button{
+    text-align: right;
+}
+
+.movie-form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.movie-form .movie-form_group {
+    width: 100%;
+    margin: 20px 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.movie-form .movie-form_group div {
+    width: calc(50% - 40px);
+    display: flex;
+    flex-direction: column
+}
+
+.movie-form .movie-form_group div label {
+    margin-bottom: 5px;
+}
+
+.movie-form .movie-form_group.movie-form_submit {
+    justify-content: flex-end;
+}
+
+.movie-form .movie-form_group.movie-form_submit input {
+    background-color: rgb(50, 189, 50);
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 10px 30px;
+    cursor: pointer;
+}
